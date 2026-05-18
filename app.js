@@ -148,7 +148,7 @@ navToggleButton.addEventListener('click', () => {
     navToggleText.textContent = '메인으로 돌아가기';
     updateStatsView();
   }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 });
 // Format helpers
 const formatNum = (num) => Number(num).toFixed(2);
@@ -458,25 +458,15 @@ form.addEventListener('submit', async (e) => {
 function resetFormLocation() {
   const formSection = document.querySelector('.form-section');
   if (!formSection) return;
-  const originalContainer = document.getElementById('view-main');
-  const tableSection = document.querySelector('.table-section');
   
-  if (formSection.parentNode !== originalContainer) {
-    formSection.classList.remove('inline-edit-mode');
-    formSection.style.margin = '';
-    formSection.style.boxShadow = '';
-    formSection.style.border = '';
-    
-    const h2 = formSection.querySelector('.panel-header h2');
-    if (h2) h2.textContent = '새 디자인 공정 입력';
-    const p = formSection.querySelector('.panel-header p');
-    if (p) p.textContent = '각 단계별 중량을 입력하면 예상 해리율이 자동 계산됩니다.';
-    
-    originalContainer.insertBefore(formSection, tableSection);
-  }
+  formSection.style.margin = '';
+  formSection.style.boxShadow = '';
+  formSection.style.border = '';
   
-  const editRow = document.getElementById('edit-form-row');
-  if (editRow) editRow.remove();
+  const h2 = formSection.querySelector('.panel-header h2');
+  if (h2) h2.textContent = '새 디자인 공정 입력';
+  const p = formSection.querySelector('.panel-header p');
+  if (p) p.textContent = '각 단계별 중량을 입력하면 예상 해리율이 자동 계산됩니다.';
 }
 
 function cancelEdit() {
@@ -495,7 +485,7 @@ function cancelEdit() {
   if (cancelBtn) cancelBtn.remove();
   
   resetFormLocation();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 }
 
 // Edit entry
@@ -550,18 +540,10 @@ const editEntry = (id) => {
   }
   
   const formSection = document.querySelector('.form-section');
-  const targetRow = document.querySelector(`#ledger-body tr[data-id="${id}"]`);
   
-  if (formSection && targetRow) {
-    const editRow = document.createElement('tr');
-    editRow.id = 'edit-form-row';
-    const editCell = document.createElement('td');
-    editCell.colSpan = 10;
-    editCell.style.padding = '0';
-    editCell.style.backgroundColor = 'var(--bg-color)';
+  if (formSection) {
+    resetFormLocation(); // 스타일을 초기화
     
-    formSection.classList.add('inline-edit-mode');
-    formSection.style.margin = '1rem';
     formSection.style.boxShadow = 'var(--shadow-md)';
     formSection.style.border = '2px solid var(--primary-color)';
     const h2 = formSection.querySelector('.panel-header h2');
@@ -569,20 +551,17 @@ const editEntry = (id) => {
     const p = formSection.querySelector('.panel-header p');
     if (p) p.textContent = '아래 내용을 수정 후 Update Ledger를 클릭하세요.';
     
-    editCell.appendChild(formSection);
-    editRow.appendChild(editCell);
-    targetRow.after(editRow);
-    
     const headerOffset = 80;
     const elementPosition = formSection.getBoundingClientRect().top;
     const offsetPosition = elementPosition + window.scrollY - headerOffset;
     
     window.scrollTo({
       top: offsetPosition,
+      left: 0,
       behavior: 'smooth'
     });
   } else {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }
 };
 
