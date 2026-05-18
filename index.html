@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>주얼리 해리율(Gold Loss) 대시보드</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+  <!-- Header -->
+  <header class="top-header">
+    <div class="header-container">
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gem"><polygon points="6 3 18 3 22 11 12 22 2 11 6 3"/><path d="M12 22V11"/><path d="M22 11H2"/><path d="M6 3L12 11 18 3"/></svg>
+        <h1>Jewelry Loss Tracker</h1>
+      </div>
+      <div class="user-profile">
+        <button id="nav-toggle-view" class="btn-primary" style="margin-right: 1rem;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bar-chart-2"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+          <span id="nav-toggle-text">통계 페이지</span>
+        </button>
+        <span class="user-name">Admin</span>
+        <div class="avatar">A</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-container">
+    <div id="view-main">
+      <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">전체 누적 통계 요약</h2>
+
+    <!-- Top Section: Material KPI Cards -->
+    <section class="material-kpi-section">
+      <!-- 18K Card -->
+      <div class="material-card panel">
+        <div class="material-card-header">
+          <h3>18K 요약</h3>
+        </div>
+        <div class="material-stats">
+          <div class="stat-item">
+            <span class="stat-label">디자인 수</span>
+            <span class="stat-value" id="stat-dsgn-18k">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">초기 중량 (g)</span>
+            <span class="stat-value" id="stat-init-18k">0.00</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">총 손실 (g)</span>
+            <span class="stat-value" id="stat-loss-18k">0.00</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">평균 해리율</span>
+            <span class="stat-value" id="stat-heri-18k">0.00%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 14K Card -->
+      <div class="material-card panel">
+        <div class="material-card-header">
+          <h3>14K 요약</h3>
+        </div>
+        <div class="material-stats">
+          <div class="stat-item">
+            <span class="stat-label">디자인 수</span>
+            <span class="stat-value" id="stat-dsgn-14k">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">초기 중량 (g)</span>
+            <span class="stat-value" id="stat-init-14k">0.00</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">총 손실 (g)</span>
+            <span class="stat-value" id="stat-loss-14k">0.00</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">평균 해리율</span>
+            <span class="stat-value" id="stat-heri-14k">0.00%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 순금 Card -->
+      <div class="material-card panel">
+        <div class="material-card-header">
+          <h3>순금 요약</h3>
+        </div>
+        <div class="material-stats">
+          <div class="stat-item">
+            <span class="stat-label">디자인 수</span>
+            <span class="stat-value" id="stat-dsgn-순금">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">초기 중량 (g)</span>
+            <span class="stat-value" id="stat-init-순금">0.00</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">총 손실 (g)</span>
+            <span class="stat-value" id="stat-loss-순금">0.00</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">평균 해리율</span>
+            <span class="stat-value" id="stat-heri-순금">0.00%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- Middle Section: Smart Input Form -->
+    <section class="form-section panel">
+      <div class="panel-header">
+        <h2>새 디자인 공정 입력</h2>
+        <p>각 단계별 중량을 입력하면 예상 해리율이 자동 계산됩니다.</p>
+      </div>
+      <form id="loss-form" class="smart-form">
+        <div class="form-row">
+          <div class="input-group">
+            <label for="startDate">등록일</label>
+            <input type="date" id="startDate" required>
+          </div>
+          <div class="input-group">
+            <label for="endDate">완료일</label>
+            <input type="date" id="endDate">
+          </div>
+          <div class="input-group design-name-group">
+            <label for="designName">디자인 이름</label>
+            <input type="text" id="designName" required placeholder="예: 18K 골드 워치">
+          </div>
+          <div class="input-group">
+            <label for="goldType">금 재질</label>
+            <select id="goldType" required>
+              <option value="18K">18K</option>
+              <option value="14K">14K</option>
+              <option value="순금">순금</option>
+            </select>
+          </div>
+          <div class="input-group" style="grid-column: span 2;">
+            <label for="productImage">제품 사진 (선택)</label>
+            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+              <div class="file-upload-wrapper" style="flex: 1;">
+                <input type="file" id="productImage" accept="image/*" class="file-input">
+                <label for="productImage" class="file-upload-btn btn-secondary" style="width: 100%; display: flex; justify-content: center; margin-top: 0;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+                  사진 선택
+                </label>
+              </div>
+              <div id="productImagePreviewWrapper" style="display: none; width: 60px; height: 60px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); flex-shrink: 0;">
+                <img id="productImagePreview" src="" alt="미리보기" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="input-group">
+            <label for="expectedWeight">라이노 예상 중량 (g)</label>
+            <input type="number" id="expectedWeight" step="0.01" placeholder="0.00">
+          </div>
+          <div class="input-group">
+            <label for="initialWeight">초기 중량 (g)</label>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="number" id="initialWeight" step="0.01" placeholder="0.00" style="flex: 1;">
+            </div>
+          </div>
+        </div>
+        
+        <div class="process-stages">
+          <div class="stage-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </div>
+          <div class="input-group stage">
+            <label for="castingWeight">1단계: 주물 (g)</label>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="number" id="castingWeight" step="0.01" placeholder="0.00" style="flex: 1;">
+            </div>
+          </div>
+          <div class="stage-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </div>
+          <div class="input-group stage">
+            <label for="craftingWeight">2단계: 세공 (g)</label>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="number" id="craftingWeight" step="0.01" placeholder="0.00" style="flex: 1;">
+            </div>
+          </div>
+          <div class="stage-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </div>
+          <div class="input-group stage">
+            <label for="polishingWeight">최종: 광택 (g)</label>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="number" id="polishingWeight" step="0.01" placeholder="0.00" style="flex: 1;">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-footer">
+          <div class="preview-box">
+            <span class="preview-label">예상 손실 (Loss)</span>
+            <span class="preview-value" id="preview-loss">0.00 g</span>
+            <span class="preview-divider">|</span>
+            <span class="preview-label">예상 해리율</span>
+            <span class="preview-value" id="preview-heri">0.00%</span>
+          </div>
+          <button type="submit" class="btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            Add to Ledger
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Bottom Section: Data Ledger -->
+    <section class="table-section panel">
+      <div class="panel-header table-header-flex">
+        <div>
+          <h2>데이터 원장 및 분석</h2>
+          <p>모든 공정 기록과 손실 데이터를 확인하세요.</p>
+        </div>
+        <button id="download-csv" class="btn-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+          Download CSV
+        </button>
+      </div>
+      
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>사진</th>
+              <th class="sortable" data-sort="name">디자인 이름 <span class="sort-icon"></span></th>
+              <th class="sortable" data-sort="startDate">일정 (등록/완료) <span class="sort-icon"></span></th>
+              <th class="sortable" data-sort="goldType">금 재질 <span class="sort-icon"></span></th>
+              <th class="sortable num-col" data-sort="initialWeight">예상/초기 (g) <span class="sort-icon"></span></th>
+              <th class="sortable num-col" data-sort="casting">주물 (g) <span class="sort-icon"></span></th>
+              <th class="sortable num-col" data-sort="crafting">세공 (g) <span class="sort-icon"></span></th>
+              <th class="sortable num-col" data-sort="final">최종 광택 (g) <span class="sort-icon"></span></th>
+              <th class="sortable num-col highlight-col" data-sort="loss">총 손실 (g) <span class="sort-icon"></span></th>
+              <th class="sortable num-col highlight-col" data-sort="heri">해리율 (%) <span class="sort-icon"></span></th>
+              <th>액션</th>
+            </tr>
+          </thead>
+          <tbody id="ledger-body">
+            <!-- Data will be populated here by JS -->
+          </tbody>
+        </table>
+      </div>
+      <div id="main-pagination" class="pagination-container"></div>
+    </section>
+  </div>
+
+  <div id="view-stats" style="display: none;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">통계 분석 대시보드</h2>
+    </div>
+
+    <!-- Date Filter -->
+    <section class="panel" style="margin-bottom: 2rem;">
+      <div class="panel-header">
+        <h3>기간 검색</h3>
+      </div>
+      <div class="filter-container">
+        <div class="input-group" style="width: 140px;">
+          <label for="filter-date-type">기준일</label>
+          <select id="filter-date-type" style="padding: 0.625rem; border: 1px solid var(--border-color); border-radius: 6px; width: 100%;">
+            <option value="startDate">등록일 기준</option>
+            <option value="endDate">완료일 기준</option>
+          </select>
+        </div>
+        <div class="input-group" style="flex: 1;">
+          <label for="filter-start-date">시작일</label>
+          <input type="date" id="filter-start-date">
+        </div>
+        <div class="input-group" style="flex: 1;">
+          <label for="filter-end-date">종료일</label>
+          <input type="date" id="filter-end-date">
+        </div>
+        <div class="input-group" style="width: 120px;">
+          <label for="filter-gold-type">금 재질</label>
+          <select id="filter-gold-type" style="padding: 0.625rem; border: 1px solid var(--border-color); border-radius: 6px; width: 100%;">
+            <option value="">전체</option>
+            <option value="18K">18K</option>
+            <option value="14K">14K</option>
+            <option value="순금">순금</option>
+          </select>
+        </div>
+        <button id="btn-search-stats" class="btn-primary" style="height: 42px;">검색</button>
+      </div>
+    </section>
+
+    <!-- Stats KPI section -->
+    <section class="material-kpi-section">
+      <div class="material-card panel">
+        <div class="material-card-header">
+          <h3>18K 검색 결과</h3>
+        </div>
+        <div class="material-stats">
+          <div class="stat-item"><span class="stat-label">디자인 수</span><span class="stat-value" id="stats-dsgn-18k">0</span></div>
+          <div class="stat-item"><span class="stat-label">초기 중량 (g)</span><span class="stat-value" id="stats-init-18k">0.00</span></div>
+          <div class="stat-item"><span class="stat-label">총 손실 (g)</span><span class="stat-value" id="stats-loss-18k">0.00</span></div>
+          <div class="stat-item"><span class="stat-label">평균 해리율</span><span class="stat-value" id="stats-heri-18k">0.00%</span></div>
+        </div>
+      </div>
+      <div class="material-card panel">
+        <div class="material-card-header">
+          <h3>14K 검색 결과</h3>
+        </div>
+        <div class="material-stats">
+          <div class="stat-item"><span class="stat-label">디자인 수</span><span class="stat-value" id="stats-dsgn-14k">0</span></div>
+          <div class="stat-item"><span class="stat-label">초기 중량 (g)</span><span class="stat-value" id="stats-init-14k">0.00</span></div>
+          <div class="stat-item"><span class="stat-label">총 손실 (g)</span><span class="stat-value" id="stats-loss-14k">0.00</span></div>
+          <div class="stat-item"><span class="stat-label">평균 해리율</span><span class="stat-value" id="stats-heri-14k">0.00%</span></div>
+        </div>
+      </div>
+      <div class="material-card panel">
+        <div class="material-card-header">
+          <h3>순금 검색 결과</h3>
+        </div>
+        <div class="material-stats">
+          <div class="stat-item"><span class="stat-label">디자인 수</span><span class="stat-value" id="stats-dsgn-순금">0</span></div>
+          <div class="stat-item"><span class="stat-label">초기 중량 (g)</span><span class="stat-value" id="stats-init-순금">0.00</span></div>
+          <div class="stat-item"><span class="stat-label">총 손실 (g)</span><span class="stat-value" id="stats-loss-순금">0.00</span></div>
+          <div class="stat-item"><span class="stat-label">평균 해리율</span><span class="stat-value" id="stats-heri-순금">0.00%</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Table Section -->
+    <section class="table-section panel">
+      <div class="panel-header table-header-flex">
+        <div>
+          <h2>데이터 원장 (검색 결과)</h2>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <select id="stats-page-size" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 6px;">
+            <option value="10">10개씩 보기</option>
+            <option value="20" selected>20개씩 보기</option>
+            <option value="50">50개씩 보기</option>
+            <option value="100">100개씩 보기</option>
+          </select>
+          <button id="download-csv-stats" class="btn-secondary">Download CSV</button>
+        </div>
+      </div>
+      
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>사진</th>
+              <th class="sortable" data-sort="name">디자인 이름 <span class="sort-icon"></span></th>
+              <th class="sortable" data-sort="startDate">일정 (등록/완료) <span class="sort-icon"></span></th>
+              <th class="sortable" data-sort="goldType">금 재질 <span class="sort-icon"></span></th>
+              <th class="sortable num-col" data-sort="initialWeight">예상/초기 (g) <span class="sort-icon"></span></th>
+              <th class="sortable num-col" data-sort="casting">주물 (g) <span class="sort-icon"></span></th>
+              <th class="sortable num-col" data-sort="crafting">세공 (g) <span class="sort-icon"></span></th>
+              <th class="sortable num-col" data-sort="final">최종 광택 (g) <span class="sort-icon"></span></th>
+              <th class="sortable num-col highlight-col" data-sort="loss">총 손실 (g) <span class="sort-icon"></span></th>
+              <th class="sortable num-col highlight-col" data-sort="heri">해리율 (%) <span class="sort-icon"></span></th>
+              <th>액션</th>
+            </tr>
+          </thead>
+          <tbody id="stats-ledger-body">
+            <!-- Data will be populated here by JS -->
+          </tbody>
+        </table>
+      </div>
+      <div id="stats-pagination" class="pagination-container"></div>
+    </section>
+  </div>
+</main>
+
+  
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
+  <script src="app.js?v=6"></script>
+
+</body>
+</html>
